@@ -1,0 +1,30 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: dark;
+  font-family: Inter, system-ui, sans-serif;
+  background: radial-gradient(circle at top, rgba(56, 189, 248, 0.18), transparent 30%),
+    radial-gradient(circle at bottom right, rgba(168, 85, 247, 0.14), transparent 28%),
+    #081229;
+}
+
+html, body {
+  min-height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  color: #e2e8f0;
+  background-color: #04091d;
+}
+
+button, input, select, textarea {
+  font: inherit;
+}
+
+::selection {
+  background: rgba(56, 189, 248, 0.35);
+}
