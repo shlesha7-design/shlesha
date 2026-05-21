@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import Background from '../../../components/Background';
 
 const exam = {
   title: 'Mathematics MCQ Exam',
@@ -10,7 +11,9 @@ const exam = {
 
 export default function StudentDashboard() {
   return (
-    <main className="min-h-screen p-8 text-slate-100">
+    <>
+      <Background pov="student" />
+      <main className="relative min-h-screen p-8 text-slate-100 z-10">
       <div className="mx-auto max-w-5xl space-y-8 rounded-3xl border border-white/10 bg-slate-950/80 p-10 shadow-glass backdrop-blur-xl">
         <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
           <div>
@@ -48,5 +51,6 @@ export default function StudentDashboard() {
         </section>
       </div>
     </main>
+    </>
   );
 }

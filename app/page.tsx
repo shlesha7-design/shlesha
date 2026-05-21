@@ -1,33 +1,53 @@
+'use client';
+
 import Link from 'next/link';
+import Background from '../components/Background';
 
 export default function Home() {
   return (
-    <main className="min-h-screen p-8 text-slate-100">
-      <div className="mx-auto flex max-w-6xl flex-col gap-10 rounded-3xl border border-white/10 bg-white/5 p-10 shadow-glass backdrop-blur-xl">
-        <section className="space-y-4">
-          <span className="inline-flex items-center rounded-full bg-cyan-500/10 px-4 py-2 text-sm text-cyan-300 ring-1 ring-cyan-500/20">
-            Samarth Classes — Teacher & Student Portals
-          </span>
-          <h1 className="text-4xl font-semibold tracking-tight text-white">
-            Separate portals for teachers and students, with secure role-based access.
+    <>
+      <Background pov="initial" />
+
+      <main className="relative z-10 flex min-h-screen items-center justify-center px-6 text-white">
+
+        <div className="w-full max-w-4xl rounded-[40px] border border-white/10 bg-black/30 p-14 text-center shadow-2xl backdrop-blur-xl">
+
+          <h1 className="text-6xl font-black tracking-tight text-white">
+            Welcome to
           </h1>
-          <p className="max-w-2xl text-slate-300">
-            Teachers manage attendance, exams, reports, and classes. Students can log in, view assigned exams, and access exam links only for their standard, batch, and division.
+
+          <h2 className="mt-4 text-7xl font-black text-emerald-400">
+            Samarth Classes
+          </h2>
+
+          <p className="mx-auto mt-8 max-w-2xl text-lg leading-relaxed text-slate-300">
+            Smart classroom management platform for attendance,
+            reports, tests and notifications.
           </p>
-        </section>
 
-        <div className="grid gap-6 md:grid-cols-2">
-          <Link href="/register" className="rounded-3xl border border-white/10 bg-slate-950/70 p-8 transition hover:border-cyan-300/40 hover:bg-slate-900/90">
-            <h2 className="text-2xl font-semibold text-white">Register</h2>
-            <p className="mt-3 text-slate-400">Sign up as a teacher or student with OTP verification and role-specific onboarding.</p>
-          </Link>
+          <div className="mt-14 flex flex-col gap-5 sm:flex-row sm:justify-center">
 
-          <Link href="/login" className="rounded-3xl border border-white/10 bg-slate-950/70 p-8 transition hover:border-violet-300/40 hover:bg-slate-900/90">
-            <h2 className="text-2xl font-semibold text-white">Login</h2>
-            <p className="mt-3 text-slate-400">Authenticate with email/password or OTP, then access the correct portal based on your role.</p>
-          </Link>
+            <Link
+              href="/register"
+              className="rounded-2xl bg-emerald-500 px-10 py-4 text-lg font-bold text-black transition-all duration-300 hover:scale-105 hover:bg-emerald-400">
+
+              Register
+            </Link>
+
+            <Link
+              href="/login"
+              className="rounded-2xl border border-white/15 bg-white/5 px-10 py-4 text-lg font-bold text-white transition-all duration-300 hover:scale-105 hover:border-emerald-400 hover:bg-emerald-500/10">
+
+              Login
+            </Link>
+          </div>
+
+          <p className="mt-6 text-sm text-slate-400">
+            Already registered? Login to continue
+          </p>
+
         </div>
-      </div>
-    </main>
+      </main>
+    </>
   );
 }

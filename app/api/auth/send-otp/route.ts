@@ -1,7 +1,6 @@
 import { NextResponse } from 'next/server';
 import nodemailer from 'nodemailer';
-
-const otpStore = new Map();
+import { otpStore } from '../../../../lib/otpStore';
 
 export async function POST(req: Request) {
   try {
@@ -46,5 +45,3 @@ export async function POST(req: Request) {
     );
   }
 }
-
-export { otpStore };

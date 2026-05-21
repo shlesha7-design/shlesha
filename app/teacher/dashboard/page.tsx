@@ -1,85 +1,234 @@
 'use client';
 
 import Link from 'next/link';
-
-const attendanceStats = [
-  { label: 'Daily Present', value: '92%' },
-  { label: 'Weekly Attendance', value: '89%' },
-  { label: 'Monthly Attendance', value: '91%' },
-  { label: 'Individual Reports', value: 'View details' }
-];
+import { useEffect, useState } from 'react';
+import Background from '../../../components/Background';
 
 export default function TeacherDashboard() {
+  const [selectedStandard, setSelectedStandard] = useState('');
+  const [selectedDivision, setSelectedDivision] = useState('');
+  const [selectedBatch, setSelectedBatch] = useState('');
+  const [user, setUser] = useState<any>(null);
+
+  useEffect(() => {
+    const storedUser = localStorage.getItem('user');
+
+    if (storedUser) {
+      setUser(JSON.parse(storedUser));
+    }
+  }, []);
+
   return (
-    <main className="min-h-screen p-8 text-slate-100">
-      <div className="mx-auto max-w-7xl space-y-8">
-        <section className="rounded-3xl border border-white/10 bg-slate-950/80 p-10 shadow-glass backdrop-blur-xl">
-          <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-            <div>
-              <h1 className="text-4xl font-semibold">Teacher Portal</h1>
-              <p className="mt-3 text-slate-400">Manage attendance, create exams, and see aggregated reports.</p>
-            </div>
-            <Link href="/" className="rounded-2xl bg-white/5 px-5 py-3 text-slate-100 ring-1 ring-white/10 transition hover:bg-white/10">Back to Home</Link>
-          </div>
+    <>
+      <Background pov="teacher" />
 
-          <div className="mt-10 grid gap-5 sm:grid-cols-2 xl:grid-cols-4">
-            {attendanceStats.map((item) => (
-              <div key={item.label} className="rounded-3xl border border-white/5 bg-slate-900/80 p-6">
-                <p className="text-sm uppercase tracking-[0.2em] text-slate-400">{item.label}</p>
-                <p className="mt-4 text-3xl font-semibold text-white">{item.value}</p>
+      <main className="relative min-h-screen z-10 flex text-white">
+        
+        {/* Sidebar */}
+        <aside className="w-80 border-r border-white/10 bg-black/30 backdrop-blur-xl p-6 flex flex-col justify-between">
+          
+          <div>
+            <h1 className="text-3xl font-bold text-emerald-400">
+              Samarth Classes
+            </h1>
+
+            <div className="mt-10 space-y-5">
+
+              {/* Standard */}
+              <div>
+                <label className="mb-2 block text-sm text-slate-300">
+                  Select Standard
+                </label>
+
+                <select
+                  value={selectedStandard}
+                  onChange={(e) => {
+                    setSelectedStandard(e.target.value);
+                    setSelectedDivision('');
+                    setSelectedBatch('');
+                  }}
+                  className="w-full rounded-2xl border border-white/10 bg-slate-950/80 px-4 py-3 text-white outline-none focus:border-emerald-400">
+                  <option value="">Choose Standard</option>
+                  <option value="7th">7th</option>
+                  <option value="8th">8th</option>
+                  <option value="9th">9th</option>
+                  <option value="10th">10th</option>
+                </select>
               </div>
-            ))}
+
+              {/* Division */}
+              {selectedStandard && (
+                <div>
+                  <label className="mb-2 block text-sm text-slate-300">
+                    Select Division
+                  </label>
+
+                  <select
+                    value={selectedDivision}
+                    onChange={(e) => {
+                      setSelectedDivision(e.target.value);
+                      setSelectedBatch('');
+                    }}
+                    className="w-full rounded-2xl border border-white/10 bg-slate-950/80 px-4 py-3 text-white outline-none focus:border-emerald-400">
+                    <option value="">Choose Division</option>
+                    <option value="A">A</option>
+                    <option value="B">B</option>
+                    <option value="C">C</option>
+                  </select>
+                </div>
+              )}
+
+              {/* Batch */}
+              {selectedDivision && (
+                <div>
+                  <label className="mb-2 block text-sm text-slate-300">
+                    Select Batch
+                  </label>
+
+                  <select
+                    value={selectedBatch}
+                    onChange={(e) => setSelectedBatch(e.target.value)}
+                    className="w-full rounded-2xl border border-white/10 bg-slate-950/80 px-4 py-3 text-white outline-none focus:border-emerald-400">
+                    <option value="">Choose Batch</option>
+                    <option value="Batch 1">Batch 1</option>
+                    <option value="Batch 2">Batch 2</option>
+                    <option value="Batch 3">Batch 3</option>
+                  </select>
+                </div>
+              )}
+            </div>
+          </div>
+
+          {/* Profile */}
+          <div className="rounded-3xl border border-white/10 bg-slate-950/70 p-5 backdrop-blur-xl">
+            <div className="flex items-center gap-4">
+              <div className="flex h-14 w-14 items-center justify-center rounded-full bg-emerald-500/20 text-xl font-bold text-emerald-300">
+                {user?.email?.charAt(0)?.toUpperCase() || 'T'}
+              </div>
+
+              <div>
+                <h3 className="font-semibold text-white">
+                  Teacher
+                </h3>
+
+                <p className="text-sm text-slate-400 break-all">
+                  {user?.email}
+                </p>
+              </div>
+            </div>
+
+            <div className="mt-5 grid gap-3">
+              <button className="rounded-2xl border border-white/10 px-4 py-3 text-sm transition hover:border-emerald-400 hover:bg-emerald-500/10">
+                Change Account
+              </button>
+
+              <button
+                onClick={() => {
+                  localStorage.removeItem('user');
+                  window.location.href = '/login';
+                }}
+                className="rounded-2xl bg-emerald-500 px-4 py-3 text-sm font-semibold text-black transition hover:bg-emerald-400">
+                Logout
+              </button>
+            </div>
+          </div>
+        </aside>
+
+        {/* Main Content */}
+        <section className="flex-1 p-8">
+
+          <div className="rounded-3xl border border-white/10 bg-black/30 p-8 backdrop-blur-xl">
+
+            <div className="flex items-center justify-between">
+              <div>
+                <h2 className="text-4xl font-bold text-white">
+                  Teacher Dashboard
+                </h2>
+
+                <p className="mt-3 text-slate-300">
+                  Manage attendance, tests and student activity.
+                </p>
+              </div>
+
+              <Link
+                href="/"
+                className="rounded-2xl border border-white/10 px-5 py-3 transition hover:border-emerald-400 hover:bg-emerald-500/10">
+                Home
+              </Link>
+            </div>
+
+            {/* Empty State */}
+            {!selectedBatch && (
+              <div className="mt-12 rounded-3xl border border-dashed border-white/10 bg-slate-950/40 p-14 text-center">
+                <h3 className="text-2xl font-semibold text-white">
+                  No Class Selected
+                </h3>
+
+                <p className="mt-3 text-slate-400">
+                  Select standard, division and batch to manage attendance and tests.
+                </p>
+              </div>
+            )}
+
+            {/* Attendance Section */}
+            {selectedBatch && (
+              <div className="mt-10 space-y-8">
+
+                {/* Attendance */}
+                <div className="rounded-3xl border border-white/10 bg-slate-950/60 p-8">
+                  <div className="flex items-center justify-between">
+                    <h3 className="text-2xl font-semibold">
+                      Attendance
+                    </h3>
+
+                    <span className="rounded-full bg-emerald-500/20 px-4 py-2 text-sm text-emerald-300">
+                      {selectedStandard} • {selectedDivision} • {selectedBatch}
+                    </span>
+                  </div>
+
+                  <div className="mt-8 rounded-2xl border border-dashed border-white/10 p-10 text-center">
+                    <p className="text-slate-400">
+                      No attendance data available yet.
+                    </p>
+                  </div>
+
+                  <div className="mt-6 flex gap-4">
+                    <button className="rounded-2xl bg-emerald-500 px-6 py-3 font-semibold text-black transition hover:bg-emerald-400">
+                      Save Attendance
+                    </button>
+
+                    <button className="rounded-2xl border border-white/10 px-6 py-3 transition hover:border-emerald-400 hover:bg-emerald-500/10">
+                      Forward Attendance
+                    </button>
+                  </div>
+                </div>
+
+                {/* Tests */}
+                <div className="rounded-3xl border border-white/10 bg-slate-950/60 p-8">
+                  <h3 className="text-2xl font-semibold">
+                    Tests & Exams
+                  </h3>
+
+                  <p className="mt-3 text-slate-400">
+                    Create MCQ tests or add external exam links.
+                  </p>
+
+                  <div className="mt-6 flex flex-wrap gap-4">
+                    <button className="rounded-2xl bg-emerald-500 px-6 py-3 font-semibold text-black transition hover:bg-emerald-400">
+                      Create MCQ Test
+                    </button>
+
+                    <button className="rounded-2xl border border-white/10 px-6 py-3 transition hover:border-emerald-400 hover:bg-emerald-500/10">
+                      Add External Exam Link
+                    </button>
+                  </div>
+                </div>
+
+              </div>
+            )}
           </div>
         </section>
-
-        <section className="grid gap-6 xl:grid-cols-[2fr_1fr]">
-          <div className="rounded-3xl border border-white/10 bg-slate-950/80 p-8 shadow-glass">
-            <div className="flex items-center justify-between gap-3">
-              <h2 className="text-2xl font-semibold">Attendance Panel</h2>
-              <span className="rounded-full bg-cyan-500/15 px-3 py-1 text-sm text-cyan-200">Standard 10th</span>
-            </div>
-            <div className="mt-6 overflow-x-auto">
-              <table className="min-w-full border-separate border-spacing-0 text-left text-sm text-slate-300">
-                <thead className="bg-slate-900/90">
-                  <tr>
-                    <th className="border-b border-white/10 px-4 py-3">Student Name</th>
-                    <th className="border-b border-white/10 px-4 py-3">Present</th>
-                    <th className="border-b border-white/10 px-4 py-3">Absent</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {['Rahul', 'Sneha', 'Aisha', 'Rohan'].map((name) => (
-                    <tr key={name} className="border-b border-white/5 hover:bg-white/5">
-                      <td className="px-4 py-4">{name}</td>
-                      <td className="px-4 py-4"><input type="radio" name={name} defaultChecked className="h-5 w-5 text-cyan-400" /></td>
-                      <td className="px-4 py-4"><input type="radio" name={name} className="h-5 w-5 text-rose-400" /></td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-            <div className="mt-6 flex flex-wrap gap-3">
-              <button className="rounded-2xl bg-cyan-500 px-6 py-3 font-semibold text-slate-950 transition hover:bg-cyan-400">Save Attendance</button>
-              <button className="rounded-2xl border border-white/10 px-6 py-3 text-slate-100 transition hover:border-cyan-300/40">Forward Attendance</button>
-            </div>
-          </div>
-
-          <div className="space-y-6 rounded-3xl border border-white/10 bg-slate-950/80 p-8 shadow-glass">
-            <div className="rounded-3xl bg-slate-900/80 p-6">
-              <h3 className="text-xl font-semibold">Create Exam</h3>
-              <p className="mt-2 text-slate-400">Add MCQ tests or external exam links for selected standard/batch/division.</p>
-            </div>
-            <div className="grid gap-4 rounded-3xl bg-slate-900/80 p-6">
-              <button className="rounded-2xl bg-cyan-500 px-5 py-3 font-semibold text-slate-950 transition hover:bg-cyan-400">Create MCQ Test</button>
-              <button className="rounded-2xl border border-white/10 px-5 py-3 text-slate-100 transition hover:border-cyan-300/40">Add External Exam Link</button>
-            </div>
-            <div className="rounded-3xl bg-slate-900/80 p-6">
-              <h3 className="text-xl font-semibold">Reports</h3>
-              <p className="mt-2 text-slate-400">Teacher dashboard shows daily, weekly and monthly attendance percentages.</p>
-            </div>
-          </div>
-        </section>
-      </div>
-    </main>
+      </main>
+    </>
   );
 }
